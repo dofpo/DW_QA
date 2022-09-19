@@ -3,10 +3,10 @@ package ru.netology.data;
 import lombok.Data;
 
 @Data
-public class StatusOperationBuying {
+public class CreditRequestEntity {
     String id;
-    String amount;
+    String bank_id;
     String created;
     String status;
-    String transaction_id;
 }
+

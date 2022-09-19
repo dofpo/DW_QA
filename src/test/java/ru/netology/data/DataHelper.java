@@ -27,7 +27,7 @@ public class DataHelper {
     @Value
     public static class FormFields {
 
-        private String numberCard;
+        private String number;
         private String month;
         private String year;
         private String holder;
@@ -55,7 +55,7 @@ public class DataHelper {
     }
 
     public static FormFields getCardApproved() {
-        var number = "'4444 4444 4444 4441";
+        var number = "4444 4444 4444 4441";
         var date = getDate();
         return new FormFields(number, date.getMonth(), date.getYear(), getHolder(), getCode());
     }
@@ -86,10 +86,6 @@ public class DataHelper {
     public static FormFields getMonthEqualZero() {
         var date = getDate();
         return new FormFields(getNumberCard(), "00", date.getYear(), getHolder(), getCode());
-    }
-    public static FormFields getMonthEqualZeroAndYearThis() {
-        var date = getDate();
-        return new FormFields(getNumberCard(), "00", "22", getHolder(), getCode());
     }
 
     public static FormFields getMonthWrong() {
@@ -211,15 +207,12 @@ public class DataHelper {
     public static StatusOperationBuying getStatusOperationBuying() {
         var runner = new QueryRunner();
         var getStatus = "SELECT status, transaction_id  FROM payment_entity ORDER BY created DESC LIMIT 1";
-
-        try (Connection connection=getConnection()) {
+        try (Connection connection = getConnection()) {
             val transactionId = runner.query(connection, getStatus, new BeanHandler<>(StatusOperationBuying.class));
             return transactionId;
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
         }
-        return null;
     }
+
 
     @SneakyThrows
     public static String getIdOperationBuying() {
@@ -228,10 +221,7 @@ public class DataHelper {
         try (Connection connection = getConnection()) {
             val paymentId = runner.query(connection, getId, new ScalarHandler<>());
             return paymentId.toString();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
     }
 
     @SneakyThrows
@@ -240,36 +230,31 @@ public class DataHelper {
         var getId = "SELECT credit_id FROM order_entity ORDER BY created DESC LIMIT 1";
         try (Connection connection = getConnection()) {
             return runner.query(connection, getId, new ScalarHandler<>());
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
     }
 
     @SneakyThrows
-    public static StatusOperationCredit getStatusOperationCredit() {
+    public static CreditRequestEntity getStatusOperationCredit() {
+
         var runner = new QueryRunner();
         var getStatus = "SELECT status, bank_id  FROM credit_request_entity  ORDER BY created DESC LIMIT 1";
 
         try (Connection connection = getConnection()) {
-            return runner.query(connection, getStatus, new BeanHandler<>(StatusOperationCredit.class));
-        }catch (SQLException e) {
-            e.printStackTrace();
+            val bankId = runner.query(connection, getStatus, new BeanHandler<>(CreditRequestEntity.class));
+            return bankId;
         }
-        return null;
     }
+
+    @SneakyThrows
     public static void cleanData() {
         val runner = new QueryRunner();
         val order = "DELETE FROM app.order_entity";
         val payment = "DELETE FROM app.payment_entity";
         val creditRequest = "DELETE FROM app.credit_request_entity";
-
         try (val connection = getConnection()) {
             runner.update(connection, order);
             runner.update(connection, payment);
             runner.update(connection, creditRequest);
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
         }
     }
 }

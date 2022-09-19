@@ -23,16 +23,27 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-    testImplementation 'com.codeborne:selenide:5.19.0'
-    testImplementation 'org.postgresql:postgresql:42.4.1'
-    implementation 'com.github.javafaker:javafaker:1.0.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+    testImplementation 'com.codeborne:selenide:6.7.4'
+    testImplementation 'org.postgresql:postgresql:42.5.0'
+    testImplementation 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
-    testImplementation 'io.rest-assured:rest-assured:4.3.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
-    testImplementation 'org.slf4j:slf4j-simple:1.7.32'
-    testImplementation 'io.qameta.allure:allure-selenide:2.16.1'
-    testImplementation 'mysql:mysql-connector-java:8.0.19'
+    testImplementation 'io.rest-assured:rest-assured:5.2.0'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.0'
+    testImplementation 'io.qameta.allure:allure-selenide:2.19.0'
+    testImplementation 'mysql:mysql-connector-java:8.0.30'
+
+//    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.0'
+//    testImplementation 'com.codeborne:selenide:5.19.0'
+//    testImplementation 'org.postgresql:postgresql:42.4.1'
+//    implementation 'com.github.javafaker:javafaker:1.0.2'
+//    testImplementation 'commons-dbutils:commons-dbutils:1.7'
+//    testImplementation 'io.rest-assured:rest-assured:4.3.0'
+//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+//    testImplementation 'org.slf4j:slf4j-simple:1.7.32'
+//    testImplementation 'io.qameta.allure:allure-selenide:2.16.1'
+//    testImplementation 'mysql:mysql-connector-java:5.1.6'
 }
 
 test {
@@ -48,4 +59,5 @@ test {
     systemProperty 'db.user', System.getProperty('db.user', 'app')
     systemProperty 'db.password', System.getProperty('db.password', 'pass')
     systemProperty 'sut.url', System.getProperty('sut.url', 'http://localhost:8080')
+    // запускать с помощью: java -jar .\aqa-shop.jar --spring.datasource.url=jdbc:mysql://localhost:3307/app
 }

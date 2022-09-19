@@ -1,5 +1,6 @@
 package ru.netology.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.data.DataHelper;
@@ -30,7 +31,7 @@ public class PageCredit {
     private SelenideElement messageApprove = $(byText("Операция одобрена Банком."));
 
     public void fillFormCredit(DataHelper.FormFields info) {
-        cardField.setValue(info.getNumberCard());
+        cardField.setValue(info.getNumber());
         monthField.setValue(info.getMonth());
         yearField.setValue(info.getYear());
         ownerField.setValue(info.getHolder());
@@ -42,8 +43,8 @@ public class PageCredit {
     }
 
     public void declinedMessage() {
-        messageError.shouldBe(visible, Duration.ofSeconds(10));
-        messageDecline.shouldBe(visible, Duration.ofSeconds(10));
+        SelenideElement notificationTitleDenial = $(".notification_status_error").shouldBe(Condition.text("Ошибка"), Duration.ofSeconds(15)).shouldBe(Condition.visible);
+        SelenideElement failureNote = $(".notification_status_error").shouldBe(Condition.text("Ошибка! Банк отказал в проведении операции."), Duration.ofSeconds(15)).shouldBe(Condition.visible);
     }
 
     public void approvedMessage() {

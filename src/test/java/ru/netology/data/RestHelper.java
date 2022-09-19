@@ -3,16 +3,18 @@ package ru.netology.data;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import lombok.experimental.UtilityClass;
 
 import static io.restassured.RestAssured.given;
 
-public class RestHelper{
-    public RestHelper() {
-    }
+@UtilityClass
+public class RestHelper {
 
-    private final RequestSpecification requestSpec = new RequestSpecBuilder()
+    public String pathBuy = "/api/v1/pay";
+    public String pathCredit = "/api/v1/credit";
+
+    private static RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(8080)
             .setAccept(ContentType.JSON)
@@ -20,49 +22,25 @@ public class RestHelper{
             .log(LogDetail.ALL)
             .build();
 
-    public String sentFormBuy(DataHelper.FormFields form) {
-        Response response =
-                given()
-                        .spec(requestSpec)
-                        .body(form)
-                        .when()
-                        .post("/api/v1/pay")
-                        .then()
-                        .statusCode(200)
-                        .extract()
-                        .response();
-        return response.path("status");
-    }
-
-    public String sentFormCredit(DataHelper.FormFields form) {
-        Response response =
-                given()
-                        .spec(requestSpec)
-                        .body(form)
-                        .when()
-                        .post("api/v1/credit")
-                        .then()
-                        .statusCode(200)
-                        .extract()
-                        .response();
-        return response.path("status");
-    }
-    public void sentInvalidFormToBuy(DataHelper.FormFields form) {
-        given()
+    public static String sentFormBuy(DataHelper.FormFields cardData) {
+        return given()
                 .spec(requestSpec)
-                .body(form)
+                .body(cardData)
                 .when()
                 .post("/api/v1/pay")
                 .then()
-                .statusCode(400);
+                .statusCode(200)
+                .extract().response().asString();
     }
-    public void sentInvalidFormToCredit(DataHelper.FormFields form) {
-        given()
+
+    public static String sentFormCredit(DataHelper.FormFields cardData) {
+        return given()
                 .spec(requestSpec)
-                .body(form)
+                .body(cardData)
                 .when()
-                .post("/api/v1/credit")
+                .post(pathCredit)
                 .then()
-                .statusCode(400);
+                .statusCode(200)
+                .extract().response().asString();
     }
 }

@@ -4,18 +4,19 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 import ru.netology.data.DataHelper;
-import ru.netology.data.RestHelper;
 import ru.netology.page.ByTourPage;
 import ru.netology.page.PageBuy;
 import ru.netology.page.PageCredit;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.netology.data.DataHelper.getCardDeclined;
+
 
 public class Test {
     public ByTourPage byTourPage = new ByTourPage();
-    public RestHelper rest = new RestHelper();
-
     @BeforeEach
     public void setUp() {
         open("http://localhost:8080/");
@@ -31,11 +32,11 @@ public class Test {
     static void setUpAll() {
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
+
     @BeforeEach
     void setUpSutUrl() {
         open(System.getProperty("sut.url"));
     }
-
 
     @org.junit.jupiter.api.Test
     @DisplayName("Should successfully buying travel by valid card")
@@ -47,7 +48,7 @@ public class Test {
         pageBuy.approvedMessage();
         var id = DataHelper.getIdOperationBuying();
         var status = DataHelper.getStatusOperationBuying();
-        assertEquals(id, status.getTransactionId());
+        assertEquals(id, status.getTransaction_id());
         assertEquals("APPROVED", status.getStatus());
     }
 
@@ -61,20 +62,21 @@ public class Test {
         pageCredit.approvedMessage();
         var id = DataHelper.getIdOperationCredit();
         var status = DataHelper.getStatusOperationCredit();
-        assertEquals(id, status.getBankId());
+        assertEquals(id, status.getBank_id());
         assertEquals("APPROVED", status.getStatus());
     }
 
     @org.junit.jupiter.api.Test
+    @DisplayName("Should be declined operation buying travel by invalid card")
     void shouldNoBuyTravel() {
         byTourPage.toBuy()
-                .fillBuyForm(DataHelper.getCardDeclined());
+                .fillBuyForm(getCardDeclined());
         PageBuy pageBuy = new PageBuy();
         pageBuy.toSent();
         pageBuy.declinedMessage();
         var id = DataHelper.getIdOperationBuying();
         var status = DataHelper.getStatusOperationBuying();
-        assertEquals(id, status.getTransactionId());
+        assertEquals(id, status.getTransaction_id());
         assertEquals("DECLINED", status.getStatus());
     }
 
@@ -83,13 +85,13 @@ public class Test {
     @DisplayName("Should be declined operation buying travel on credit by invalid card")
     void shouldNoBuyTravelWithCredit() {
         byTourPage.toCredit()
-                .fillFormCredit(DataHelper.getCardDeclined());
+                .fillFormCredit(getCardDeclined());
         PageCredit pageCredit = new PageCredit();
         pageCredit.toSent();
         pageCredit.declinedMessage();
         var id = DataHelper.getIdOperationCredit();
         var status = DataHelper.getStatusOperationCredit();
-        assertEquals(id, status.getBankId());
+        assertEquals(id, status.getBank_id());
         assertEquals("DECLINED", status.getStatus());
     }
 
@@ -125,7 +127,7 @@ public class Test {
 
     @org.junit.jupiter.api.Test
     @DisplayName("Should be messages field 'Holder' only enter first name")
-    void shouldMessageWrongFieldOwner3() {
+    void shouldMessageFieldHolderFirstName() {
         byTourPage.toBuy()
                 .fillBuyForm(DataHelper.getHolderFirstName());
         PageBuy pageBuy = new PageBuy();
@@ -140,6 +142,7 @@ public class Test {
                 .fillBuyForm(DataHelper.getHolderWithSpecChar());
         PageBuy pageBuy = new PageBuy();
         pageBuy.toSent();
+        Duration.ofSeconds(10);
         pageBuy.wrongFieldHolderMessage();
     }
 
@@ -203,7 +206,7 @@ public class Test {
 
     @org.junit.jupiter.api.Test
     @DisplayName("Should be messages about empty field 'Holder")
-    void shouldMessageEmptyFieldsOwner() {
+    void shouldMessageEmptyFieldsHolder() {
         byTourPage.toBuy()
                 .fillBuyForm(DataHelper.getHolderEmpty());
         PageBuy pageBuy = new PageBuy();
@@ -228,16 +231,7 @@ public class Test {
                 .fillBuyForm(DataHelper.getMonthEqualZero());
         PageBuy pageBuy = new PageBuy();
         pageBuy.toSent();
-        pageBuy.validityMonthMessage();
-    }
-
-    @org.junit.jupiter.api.Test
-    @DisplayName("Should be messages when enter field 'Month' zero and year equal '22'")
-    void shouldMonthEqualZeroAndYearThis() {
-        byTourPage.toBuy()
-                .fillBuyForm(DataHelper.getMonthEqualZeroAndYearThis());
-        PageBuy pageBuy = new PageBuy();
-        pageBuy.toSent();
+        Duration.ofSeconds(10);
         pageBuy.validityMonthMessage();
     }
 
@@ -310,4 +304,5 @@ public class Test {
         pageBuy.toSent();
         pageBuy.wrongFieldMonthMessage();
     }
+
 }

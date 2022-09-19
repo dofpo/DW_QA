@@ -2,6 +2,7 @@ package ru.netology.page;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import lombok.val;
 import org.openqa.selenium.Keys;
 import ru.netology.data.DataHelper;
 
@@ -18,6 +19,7 @@ public class PageBuy {
         SelenideElement pageBuy = $x("//*[text()='Оплата по карте']");
         pageBuy.shouldBe(visible);
     }
+
     private ElementsCollection form = $$(".form-field .input");
     private SelenideElement numberCard = form.find(exactText("Номер карты")).$(".input__control");
     private SelenideElement month = form.find(exactText("Месяц")).$(".input__control");
@@ -39,14 +41,13 @@ public class PageBuy {
     private SelenideElement messageApprove = $(byText("Операция одобрена Банком."));
 
 
-
     public void declinedMessage() {
-        SelenideElement message = $(byText("Ошибка")).shouldBe(visible, Duration.ofSeconds(10));
-        SelenideElement messageSecond = $(byText("Ошибка! Банк отказал в проведении операции.")).shouldBe(visible, Duration.ofSeconds(10));
+        SelenideElement message = $x("//*[text()='Ошибка']").shouldBe(visible, Duration.ofSeconds(10));
+        SelenideElement messageSecond = $x("//*[text()='Ошибка! Банк отказал в проведении операции.']").shouldBe(visible, Duration.ofSeconds(10));
     }
 
     public void approvedMessage() {
-        SelenideElement message = $(byText("Успешно")).shouldBe(visible, Duration.ofSeconds(10));
+        SelenideElement message = $x("//*[text()='Успешно']").shouldBe(visible, Duration.ofSeconds(10));
         SelenideElement messageSecond = $x("//*[text()='Операция одобрена Банком.']").shouldBe(visible, Duration.ofSeconds(10));
     }
 
@@ -126,7 +127,7 @@ public class PageBuy {
     }
 
     public void fillBuyForm(DataHelper.FormFields info) {
-        numberCard.setValue(info.getNumberCard());
+        numberCard.setValue(info.getNumber());
         month.setValue(info.getMonth());
         year.setValue(info.getYear());
         holder.setValue(info.getHolder());
