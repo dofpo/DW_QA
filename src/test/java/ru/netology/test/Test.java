@@ -2,6 +2,7 @@ package ru.netology.test;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
+import lombok.val;
 import org.junit.jupiter.api.*;
 import ru.netology.data.DataHelper;
 import ru.netology.page.ByTourPage;
@@ -12,11 +13,13 @@ import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.data.DataHelper.getCardDeclined;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static ru.netology.data.DataHelper.*;
 
 
 public class Test {
     public ByTourPage byTourPage = new ByTourPage();
+
     @BeforeEach
     public void setUp() {
         open("http://localhost:8080/");
@@ -61,7 +64,7 @@ public class Test {
         pageCredit.toSent();
         pageCredit.approvedMessage();
         var id = DataHelper.getIdOperationCredit();
-        var status = DataHelper.getStatusOperationCredit();
+        var status = getStatusOperationCredit();
         assertEquals(id, status.getBank_id());
         assertEquals("APPROVED", status.getStatus());
     }
@@ -90,7 +93,7 @@ public class Test {
         pageCredit.toSent();
         pageCredit.declinedMessage();
         var id = DataHelper.getIdOperationCredit();
-        var status = DataHelper.getStatusOperationCredit();
+        var status = getStatusOperationCredit();
         assertEquals(id, status.getBank_id());
         assertEquals("DECLINED", status.getStatus());
     }
@@ -304,5 +307,4 @@ public class Test {
         pageBuy.toSent();
         pageBuy.wrongFieldMonthMessage();
     }
-
 }

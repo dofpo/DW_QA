@@ -219,7 +219,7 @@ public class DataHelper {
         val runner = new QueryRunner();
         val getId = "SELECT payment_id FROM order_entity ORDER BY created DESC LIMIT 1";
         try (Connection connection = getConnection()) {
-            val paymentId = runner.query(connection, getId, new ScalarHandler<>());
+            val paymentId = runner.query(connection, getId, new ScalarHandler<>(String.valueOf(OrderEntity.class)));
             return paymentId.toString();
         }
     }
@@ -248,9 +248,9 @@ public class DataHelper {
     @SneakyThrows
     public static void cleanData() {
         val runner = new QueryRunner();
-        val order = "DELETE FROM app.order_entity";
-        val payment = "DELETE FROM app.payment_entity";
-        val creditRequest = "DELETE FROM app.credit_request_entity";
+        val order = "DELETE FROM order_entity";
+        val payment = "DELETE FROM payment_entity";
+        val creditRequest = "DELETE FROM credit_request_entity";
         try (val connection = getConnection()) {
             runner.update(connection, order);
             runner.update(connection, payment);
@@ -258,4 +258,5 @@ public class DataHelper {
         }
     }
 }
+
 

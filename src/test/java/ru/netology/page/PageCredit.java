@@ -48,8 +48,8 @@ public class PageCredit {
     }
 
     public void approvedMessage() {
-        messageSuccess.shouldBe(visible, Duration.ofSeconds(10));
-        messageApprove.shouldBe(visible, Duration.ofSeconds(10));
+        messageSuccess.shouldBe(visible, Duration.ofSeconds(20));
+        messageApprove.shouldBe(visible, Duration.ofSeconds(20));
     }
 }
 
