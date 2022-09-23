@@ -10,11 +10,11 @@
 
 ## Документация
 
-[План автоматизации тестирования веб-формы сервиса покупки туров интернет-банка](https://github.com/dofpo/DW_QA/blob/master/Plan.md)
+[План автоматизации тестирования веб-формы сервиса покупки туров интернет-банка](https://github.com/dofpo/DW_QA/blob/master/documents/Plan.md)
 
-[//]: # ([Отчёт о проведённом тестировании]&#40;https://github.com/Report.md&#41;)
+[Отчёт о проведённом тестировании](https://github.com/dofpo/DW_QA/blob/master/documents/Report.md)
 
-[//]: # ([Комплексный отчёт о проведённой автоматизации тестирования]&#40;https://github.com//Summary.md&#41;)
+[Комплексный отчёт о проведённой автоматизации тестирования](https://github.com/dofpo/DW_QA/blob/master/documents/Summary.md)
 
 
 
@@ -29,7 +29,7 @@
 3. Открыть проект в IntelliJ IDEA
 
 ### Запуск
-1. Запустить необходимые базы данных (MySQL и PostgreSQL), а также NodeJS. Параметры для запуска хранятся в файле `docker-compose.yml`. Для запуска необходимо ввести в терминале команду:
+1. Запустить необходимые базы данных (MySQL и PostgreSQL), а также NodeJS. Параметры для запуска хранятся в файле [`docker-compose.yml`](https://github.com/dofpo/DW_QA/blob/master/docker-compose.yml). Для запуска необходимо ввести в терминале команду:
 ```
 docker-compose up
 ```
