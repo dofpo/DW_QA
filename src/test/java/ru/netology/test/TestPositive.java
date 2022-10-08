@@ -24,9 +24,7 @@ public class TestPositive {
     public void setUp() {
         open("http://localhost:8080/");
     }
-    void setUpSutUrl() {
-        open(System.getProperty("sut.url"));
-    }
+
     @AfterAll
     static void tearDownAll() {
         DBHelper.cleanData();

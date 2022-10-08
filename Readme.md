@@ -34,7 +34,7 @@
 docker-compose up
 ```
 2. В новой вкладке терминала ввести следующую команду в зависимости от базы данных
-- `java -jar .\aqa-shop.jar --spring.datasource.url=jdbc:mysql://localhost:3307/app` - для MySQL
+- `java -jar .\aqa-shop.jar --spring.datasource.url=jdbc:mysql://localhost:3306/app` - для MySQL
 - `java -jar .\aqa-shop.jar --spring.datasource.url=jdbc:postgresql://localhost:5432/app` - для PostgreSQL
 3. Приложение должно запуститься работать по адресу http://localhost:8080/
 
@@ -48,6 +48,6 @@ docker-compose up
 ## Формирование отчета AllureReport по результатам тестирования
 В новой вкладке терминала или нажав двойной Ctrl ввести команду:
 ```
-gradlew allureServe
+./gradlew allureServe
 ```
 Сгенерированный отчет откроется в браузере автоматически. После просмотра и закрытия отчета можно остановить работу команды, нажав Ctrl+С или закрыть вкладку Run и нажать Disconnect.

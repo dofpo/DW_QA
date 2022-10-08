@@ -6,7 +6,6 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import ru.netology.databaseentities.CreditRequestEntity;
-import ru.netology.databaseentities.OrderEntity;
 import ru.netology.databaseentities.StatusOperationBuying;
 
 import java.sql.Connection;
@@ -15,15 +14,14 @@ import java.sql.SQLException;
 
 public class DBHelper {
     private static final String url = System.getProperty("db.url");
-    private static final String user = System.getProperty("db.user");
-    private static final String password = System.getProperty("db.password");
     private static Connection connection;
 
     @SneakyThrows
     public static Connection getConnection() {
         try {
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
+            connection = DriverManager.getConnection(url, "app", "pass");
+        }
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return connection;
@@ -39,14 +37,13 @@ public class DBHelper {
         }
     }
 
-
     @SneakyThrows
     public static String getIdOperationBuying() {
 
         val runner = new QueryRunner();
-        val getId = "SELECT payment_id FROM order_entity";
+        val getId = "SELECT payment_id FROM order_entity ORDER BY created DESC LIMIT 1";
         try (Connection connection = getConnection()) {
-            val paymentId = runner.query(connection, getId, new ScalarHandler<>(String.valueOf(OrderEntity.class)));
+            val paymentId = runner.query(connection, getId, new ScalarHandler<>());
             return paymentId.toString();
         }
     }
@@ -67,8 +64,7 @@ public class DBHelper {
         var getStatus = "SELECT status, bank_id  FROM credit_request_entity  ORDER BY created DESC LIMIT 1";
 
         try (Connection connection = getConnection()) {
-            val bankId = runner.query(connection, getStatus, new BeanHandler<>(CreditRequestEntity.class));
-            return bankId;
+            return runner.query(connection, getStatus, new BeanHandler<>(CreditRequestEntity.class));
         }
     }
 
