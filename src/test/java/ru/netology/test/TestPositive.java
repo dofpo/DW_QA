@@ -53,8 +53,8 @@ public class TestPositive {
     @org.junit.jupiter.api.Test
     @DisplayName("Should successfully buying travel with credit by valid card")
     void shouldBuyTravelOnCredit() {
-        byTourPage.toBuy()
-                .fillBuyForm(DataHelper.getCardApproved());
+        byTourPage.toCredit()
+                .fillFormCredit(DataHelper.getCardApproved());
         PageCredit pageCredit = new PageCredit();
         pageCredit.toSent();
         pageCredit.approvedMessage();

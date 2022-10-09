@@ -6,6 +6,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import ru.netology.databaseentities.CreditRequestEntity;
+import ru.netology.databaseentities.OrderEntity;
 import ru.netology.databaseentities.StatusOperationBuying;
 
 import java.sql.Connection;
@@ -20,8 +21,7 @@ public class DBHelper {
     public static Connection getConnection() {
         try {
             connection = DriverManager.getConnection(url, "app", "pass");
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return connection;
@@ -49,11 +49,12 @@ public class DBHelper {
     }
 
     @SneakyThrows
-    public static String getIdOperationCredit() {
+    public static OrderEntity getIdOperationCredit() {
         var runner = new QueryRunner();
-        var getId = "SELECT credit_id FROM order_entity ORDER BY created DESC LIMIT 1";
-        try (Connection connection = getConnection()) {
-            return runner.query(connection, getId, new ScalarHandler<>());
+        val creditId = "SELECT credit_id FROM order_entity ORDER BY created DESC LIMIT 1";
+        try (var conn = DriverManager.getConnection(
+                url, "app", "pass");) {
+            return runner.query(conn, creditId, new ScalarHandler<>());
         }
     }
 
